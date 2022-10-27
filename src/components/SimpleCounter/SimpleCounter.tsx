@@ -29,9 +29,11 @@ export const SimpleCounter: FC<PropsType> = ({}) => {
         <Display value={displayTitle}/>
         <div className={styles.buttonsContainer}>
 
-            <Button disabled={counter.settingMode || Boolean(counter.error) || counter.count === counter.newMaxValue}
+            <Button error={counter.error}
+                    disabled={counter.settingMode || Boolean(counter.error) || counter.count === counter.newMaxValue}
                     onClick={incOnClickHandler} title={"inc"}/>
-            <Button disabled={counter.settingMode || Boolean(counter.error) || counter.count === counter.newMinValue}
+            <Button error={counter.error}
+                    disabled={counter.settingMode || Boolean(counter.error) || counter.count === counter.newMinValue}
                     onClick={resetOnClickHandler}
                     title={"reset"}/>
         </div>

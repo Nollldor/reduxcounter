@@ -39,7 +39,7 @@ export const Settings: FC<PropsType> = ({}) => {
 
     }
     const setOnClickHandler = () => {
-        if (counter.newMinValue < counter.newMaxValue){
+        if (counter.newMinValue < counter.newMaxValue) {
             dispatch(setValues())
             dispatch(toggleSettingMode(false))
         }
@@ -48,14 +48,17 @@ export const Settings: FC<PropsType> = ({}) => {
     return <div className={styles.settings}>
         <div className={styles.inputsContainer}>
             <div>
-                <span>min value: </span> <Input value={counter.newMinValue} onChange={onChangeMin}/>
+                <span>min value: </span> <Input error={counter.error} value={counter.newMinValue}
+                                                onChange={onChangeMin}/>
             </div>
             <div>
-                <span>max value: </span> <Input value={counter.newMaxValue} onChange={onChangeMax}/>
+                <span>max value: </span> <Input error={counter.error} value={counter.newMaxValue}
+                                                onChange={onChangeMax}/>
             </div>
         </div>
         <div className={styles.buttonsContainer}>
-            <Button disabled={!counter.settingMode || Boolean(counter.error)} onClick={setOnClickHandler}
+            <Button error={counter.error} disabled={!counter.settingMode || Boolean(counter.error)}
+                    onClick={setOnClickHandler}
                     title={"set"}/>
         </div>
 
