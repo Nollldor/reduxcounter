@@ -10,7 +10,7 @@ type PropsType = {}
 
 export const SimpleCounter: FC<PropsType> = ({}) => {
 
-    const counter = useSelector<AppRootStateType, StateType>(state=> state.counter)
+    const counter = useSelector<AppRootStateType, StateType>(state => state.counter)
     const dispatch = useDispatch()
 
     const incOnClickHandler = () => {
@@ -21,14 +21,19 @@ export const SimpleCounter: FC<PropsType> = ({}) => {
         dispatch(reset())
     }
 
+    const displayTitle = counter.error ? counter.error
+        : counter.settingMode ? "please set new min-max values"
+            : counter.count
+
     return <div className={styles.simpleCounter}>
-        {counter.settingMode?
-            <Display value={"please set new min-max values"}/>
-            : <Display value={counter.count}/>}
+        <Display value={displayTitle}/>
         <div className={styles.buttonsContainer}>
 
-            <Button disabled={counter.settingMode} onClick={incOnClickHandler} title={"inc"}/>
-            <Button disabled={counter.settingMode} onClick={resetOnClickHandler} title={"reset"}/>
+            <Button disabled={counter.settingMode || Boolean(counter.error) || counter.count === counter.newMaxValue}
+                    onClick={incOnClickHandler} title={"inc"}/>
+            <Button disabled={counter.settingMode || Boolean(counter.error) || counter.count === counter.newMinValue}
+                    onClick={resetOnClickHandler}
+                    title={"reset"}/>
         </div>
     </div>
 }

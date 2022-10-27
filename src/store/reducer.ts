@@ -5,6 +5,7 @@ export type StateType = {
     newMinValue: number
     newMaxValue: number
     settingMode: boolean
+    error: null | string
 }
 
 const InitialState: StateType = {
@@ -13,7 +14,8 @@ const InitialState: StateType = {
     minValue: 0,
     newMinValue: 0,
     newMaxValue: 10,
-    settingMode: false
+    settingMode: false,
+    error: null
 }
 
 type ActionsType = ReturnType<typeof increase>
@@ -22,11 +24,12 @@ type ActionsType = ReturnType<typeof increase>
     | ReturnType<typeof setNewMinValue>
     | ReturnType<typeof setNewMaxValue>
     | ReturnType<typeof toggleSettingMode>
+    | ReturnType<typeof setError>
 
 export const reducer = (state: StateType = InitialState, action: ActionsType) => {
     switch (action.type) {
         case 'INCREASE-COUNT':
-            return {...state, count: state.count+1<=state.maxValue? state.count+1 : state.count}
+            return {...state, count: state.count + 1 <= state.maxValue ? state.count + 1 : state.count}
         case 'RESET-COUNT':
             return {...state, count: state.minValue}
         case 'SET-VALUES':
@@ -37,6 +40,8 @@ export const reducer = (state: StateType = InitialState, action: ActionsType) =>
             return {...state, newMaxValue: action.value}
         case 'TOGGLE-SETTING-MODE':
             return {...state, settingMode: action.value}
+        case 'SET-ERROR':
+            return {...state, error: action.value}
         default:
             return state
     }
@@ -54,17 +59,22 @@ export const setValues = () => ({
     type: 'SET-VALUES'
 } as const)
 
-export const setNewMinValue = (value:number) => ({
+export const setNewMinValue = (value: number) => ({
     type: 'SET-NEW-MIN',
     value
 } as const)
 
-export const setNewMaxValue = (value:number) => ({
+export const setNewMaxValue = (value: number) => ({
     type: 'SET-NEW-MAX',
     value
 } as const)
 
 export const toggleSettingMode = (value: boolean) => ({
     type: 'TOGGLE-SETTING-MODE',
+    value
+} as const)
+
+export const setError = (value: null | string) => ({
+    type: 'SET-ERROR',
     value
 } as const)

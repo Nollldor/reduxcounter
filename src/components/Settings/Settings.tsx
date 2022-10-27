@@ -1,8 +1,8 @@
-import React, {ChangeEvent, FC, useState} from "react";
+import React, {ChangeEvent, FC} from "react";
 import styles from "./Settings.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../store/store";
-import {setNewMaxValue, setNewMinValue, setValues, StateType, toggleSettingMode} from "../../store/reducer";
+import {setError, setNewMaxValue, setNewMinValue, setValues, StateType, toggleSettingMode} from "../../store/reducer";
 import {Input} from "../Input/Input";
 import {Button} from "../Component/Button";
 
@@ -13,18 +13,36 @@ export const Settings: FC<PropsType> = ({}) => {
     const dispatch = useDispatch()
 
 
-
-    const onChangeMin = (e:ChangeEvent<HTMLInputElement>) => {
+    const onChangeMin = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(toggleSettingMode(true))
         dispatch(setNewMinValue(+e.currentTarget.value))
-        dispatch(toggleSettingMode(true))
+
+        if (+e.currentTarget.value < counter.newMaxValue) {
+            if (Boolean(counter.error)) {
+                dispatch(setError(null))
+            }
+        } else {
+            dispatch(setError("min value can't be more than max value"))
+        }
     }
-    const onChangeMax = (e:ChangeEvent<HTMLInputElement>) => {
-        dispatch(setNewMaxValue(+e.currentTarget.value))
+    const onChangeMax = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(toggleSettingMode(true))
+        dispatch(setNewMaxValue(+e.currentTarget.value))
+
+        if (+e.currentTarget.value > counter.newMinValue) {
+            if (Boolean(counter.error)) {
+                dispatch(setError(null))
+            }
+        } else {
+            dispatch(setError("max value can't be less than min value"))
+        }
+
     }
     const setOnClickHandler = () => {
-        dispatch(setValues())
-        dispatch(toggleSettingMode(false))
+        if (counter.newMinValue < counter.newMaxValue){
+            dispatch(setValues())
+            dispatch(toggleSettingMode(false))
+        }
     }
 
     return <div className={styles.settings}>
@@ -37,7 +55,8 @@ export const Settings: FC<PropsType> = ({}) => {
             </div>
         </div>
         <div className={styles.buttonsContainer}>
-            <Button disabled={!counter.settingMode} onClick={setOnClickHandler} title={"set"}/>
+            <Button disabled={!counter.settingMode || Boolean(counter.error)} onClick={setOnClickHandler}
+                    title={"set"}/>
         </div>
 
     </div>
