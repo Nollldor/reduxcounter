@@ -1,9 +1,10 @@
 import React, {FC} from "react";
 import styles from "./SimpleCounter.module.css"
-import {Display} from "../Display/Display";
+import {Display} from "./Display/Display";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../store/store";
 import {increase, reset, StateType} from "../../store/reducer";
+import {Button} from "../Component/Button";
 
 type PropsType = {}
 
@@ -20,13 +21,14 @@ export const SimpleCounter: FC<PropsType> = ({}) => {
         dispatch(reset())
     }
 
-    console.log(counter)
-
     return <div className={styles.simpleCounter}>
-        <Display value={counter.count}/>
+        {counter.settingMode?
+            <Display value={"please set new min-max values"}/>
+            : <Display value={counter.count}/>}
         <div className={styles.buttonsContainer}>
-            <button onClick={incOnClickHandler}>inc</button>
-            <button onClick={resetOnClickHandler}>reset</button>
+
+            <Button disabled={counter.settingMode} onClick={incOnClickHandler} title={"inc"}/>
+            <Button disabled={counter.settingMode} onClick={resetOnClickHandler} title={"reset"}/>
         </div>
     </div>
 }

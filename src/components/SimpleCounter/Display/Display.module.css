@@ -6,4 +6,7 @@
     align-items: center;
     border: 1px solid white;
     border-radius: 5px;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
 }

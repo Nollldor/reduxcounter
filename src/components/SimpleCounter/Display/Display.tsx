@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import styles from './Display.module.css'
 
 type PropsType = {
-    value: number
+    value: number | string
 }
 
 export const Display:FC<PropsType> = ({value}) => {
